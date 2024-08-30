@@ -21,3 +21,4 @@ load_and_test(model)
 
 
 
+print("SANTI ES RE TROLO")
