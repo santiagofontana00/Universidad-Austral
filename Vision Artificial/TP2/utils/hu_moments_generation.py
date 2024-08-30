@@ -3,6 +3,7 @@ import csv
 import glob
 import numpy
 import math
+import os
 
 
 # Escribo los valores de los momentos de Hu en el archivo
@@ -18,8 +19,11 @@ def write_hu_moments(label, writer):
 
 
 def generate_hu_moments_file():
-    with open('generated-files/shapes-hu-moments.csv', 'w',
-              newline='') as file:  # Se genera un archivo nuevo (W=Write)
+    # Ensure the directory exists
+    os.makedirs('./generated-files', exist_ok=True)
+
+    # Create or overwrite the file
+    with open('./generated-files/hu_moments.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         # Ahora escribo los momentos de Hu de cada uno de las figuras. Con el string "rectangle...etc" busca en la carpeta donde estan cada una de las imagenes
         # generar los momentos de Hu y los escribe sobre este archivo. (LOS DE ENTRENAMIENTO).

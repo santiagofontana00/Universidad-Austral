@@ -1,11 +1,24 @@
 from utils.hu_moments_generation import generate_hu_moments_file
 from utils.testing_model import load_and_test
 from utils.training_model import train_model
+import os
+import joblib
+import cv2
+#guardar los momentos de mis datos de training de hu en un archivo
+generate_hu_moments_file()
 
-generate_hu_moments_file() 
 model = train_model()
-load_and_test(model)
 
+
+# Save the trained model
+model_path = './generated-files/trained_model.joblib'
+model.save(model_path)
+print(f"Model saved to {model_path}")
+
+# Load the saved model before testing
+# loaded_model = joblib.load(model_path)
+loaded_model = cv2.ml.DTrees_load(model_path)
+load_and_test(loaded_model)
 
 #hay que guardar el modelo en un archivo en vez de reentrenarlo cada vez
 #hay que ver que pasa si en el archivo de entrenamiento hay mas de una imagen
@@ -21,4 +34,4 @@ load_and_test(model)
 
 
 
-print("SANTI ES RE TROLO")
+print("SANTI ES RE ***")
