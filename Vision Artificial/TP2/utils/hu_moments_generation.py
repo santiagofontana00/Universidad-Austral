@@ -5,25 +5,25 @@ import numpy
 import math
 import os
 
+from utils.label_converters import label_to_int
 
 # Escribo los valores de los momentos de Hu en el archivo
 def write_hu_moments(label, writer):
-    files = glob.glob('./shapes/' + label + '/*')  # label recibe el nombre de la carpeta
+    files = glob.glob('./TP2/shapes/' + label + '/*')  # label recibe el nombre de la carpeta
     hu_moments = []
     for file in files:
         hu_moments.append(hu_moments_of_file(file))
     for mom in hu_moments:
-        flattened = mom.ravel()  # paso de un array de arrays a un array simple.
-        row = numpy.append(flattened, label)  # le metes el flattened array y le agregas el label
-        writer.writerow(row)  # Escribe una linea en el archivo.
-
+        flattened = mom.ravel().tolist()  # Convert to Python list
+        row = flattened + [label_to_int(label)]  # Combine list and integer
+        writer.writerow(row)  # Write to CSV
 
 def generate_hu_moments_file():
     # Ensure the directory exists
-    os.makedirs('./generated-files', exist_ok=True)
+    os.makedirs('./TP2/generated-files', exist_ok=True)
 
     # Create or overwrite the file
-    with open('./generated-files/hu_moments.csv', 'w', newline='') as file:
+    with open('./TP2/generated-files/hu_moments.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         # Ahora escribo los momentos de Hu de cada uno de las figuras. Con el string "rectangle...etc" busca en la carpeta donde estan cada una de las imagenes
         # generar los momentos de Hu y los escribe sobre este archivo. (LOS DE ENTRENAMIENTO).

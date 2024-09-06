@@ -3,8 +3,6 @@ import csv
 
 import numpy as np
 
-from utils.label_converters import label_to_int
-
 trainData = []
 trainLabels = []
 
@@ -12,7 +10,7 @@ trainLabels = []
 def load_training_set():
     global trainData
     global trainLabels
-    with open('./generated-files/hu_moments.csv') as csv_file:
+    with open('./TP2/generated-files/hu_moments.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         for row in csv_reader:
             class_label = row.pop() # saca el ultimo elemento de la lista
@@ -20,7 +18,7 @@ def load_training_set():
             for n in row:
                 floats.append(float(n)) # tiene los momentos de Hu transformados a float.
             trainData.append(np.array(floats, dtype=np.float32)) # momentos de Hu
-            trainLabels.append(np.array([label_to_int(class_label)], dtype=np.int32)) # Resultados
+            trainLabels.append(np.array(class_label, dtype=np.int32)) # Resultados
             #Valores y resultados se necesitan por separados
     trainData = np.array(trainData, dtype=np.float32)
     trainLabels = np.array(trainLabels, dtype=np.int32)
