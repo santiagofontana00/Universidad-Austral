@@ -1,0 +1,27 @@
+bajarme la carpeta e de practica segmentacion actuilizado 
+
+aca empiezo a describir el archivo de coins.py
+
+hay dos formas de encontrar los centros (foreground) una es mejor que la otra, la de distance es mejor que erosionar (erode)
+
+linea 58, primer valor es cuantas monedas encuentra. el markers es como un nombre unico
+
+markers es una matriz, tengo lo que se que es fonde como 1, lo que se que es nucleo como numeros unicos (etiquetas) y lo que no se que es (unkwon) como 0
+
+el watershed es lo que define si el unkwon es moneda  1, 2 o fondo
+
+-1 es lo que no sabe distinguir bien (los bordes de las monedas) eso nos conviene remarcarlo en azul. Tambien se marca el borde de la imagen.
+
+draw labels cambia de la matriz de etiquitas a pintado a color. 
+
+aca termino 
+
+
+tengo que aplicar eso en la de celulas, pero con trackbars modifical los thresholds. Uno para encontrar los nucleos y otro para el background
+
+buenos valores nucleo 62
+background 20
+MAS O MENOS
+
+el archivod de watersehd.py es segmentacion asistida, esta bueno miralo un toque. Yo a mano le digo esto es fondo, esto es campera, esto es bla bla bla 
+cambiar el tamaño de la camara, la resolucion. linea 46
