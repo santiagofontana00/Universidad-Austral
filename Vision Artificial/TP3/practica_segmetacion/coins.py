@@ -13,7 +13,7 @@ def draw_labels(labels, img):
     cv.waitKey(0)
 
 
-img = cv.imread("./TP3/preactica_segmetacion/water_coins.jpeg")
+img = cv.imread("./TP3/practica_segmetacion/water_coins.jpeg")
 gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
 _, thresh = cv.threshold(gray,0,255,cv.THRESH_BINARY_INV+cv.THRESH_OTSU)
 

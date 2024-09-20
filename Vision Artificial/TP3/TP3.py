@@ -2,12 +2,21 @@ import numpy as np
 import cv2 as cv
 
 def draw_labels(labels, img):
-    normalized_labels = cv.normalize(labels, None, 0, 255, cv.NORM_MINMAX, dtype=cv.CV_8U)
+    # Create a blank white image
+    colored_labels = np.ones_like(img) * 255
 
-    # Apply a colormap
-    colored_labels = cv.applyColorMap(normalized_labels, cv.COLORMAP_JET)
+    # Loop through unique labels (excluding background)
+    for label in np.unique(labels):
+        if label == 1:
+            continue  # Skip background
+        # Create a mask for the current label
+        mask = (labels == label)
+        # Determine color based on area
+        area = np.sum(mask)
+        area_threshold = cv.getTrackbarPos('Area Threshold', 'Controls')
+        color = (255, 0, 0) if area <= area_threshold else (0, 0, 255)  # Red for area <= 50, Blue otherwise
+        colored_labels[mask] = color
 
-    
     cv.imshow('Colored Labels', colored_labels)
 
 def on_trackbar(val):
@@ -20,11 +29,12 @@ cv.namedWindow('Controls')
 # Create trackbars in the 'Controls' window
 cv.createTrackbar('Nucleo', 'Controls', 0, 255, on_trackbar)
 cv.createTrackbar('Background', 'Controls', 0, 40, on_trackbar)
+cv.createTrackbar('Area Threshold', 'Controls', 5000, 50000, on_trackbar)  # Rango de 0 a 100
 
 while True:
     img = cv.imread("./TP3/levadura.png")
     # Reduce image size
-    img = cv.resize(img, None, fx=0.5, fy=0.5, interpolation=cv.    INTER_AREA)
+    #img = cv.resize(img, None, fx=0.5, fy=0.5, interpolation=cv.    INTER_AREA)
 
     gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
 
@@ -37,15 +47,15 @@ while True:
 
     # Denoise nucleos
     kernel = np.ones((3,3), np.uint8)
-    nucleos_denoised = cv.morphologyEx(nucleos, cv.MORPH_OPEN, kernel)
-    nucleos_denoised = cv.morphologyEx(nucleos_denoised, cv.MORPH_CLOSE, kernel)
+    nucleos_denoised = cv.morphologyEx(nucleos, cv.MORPH_OPEN, kernel, iterations=3)
+    nucleos_denoised = cv.morphologyEx(nucleos_denoised, cv.MORPH_CLOSE, kernel, iterations=3)
     
     # Generate binary image for background
     _, background_mask = cv.threshold(gray, background, 255, cv.THRESH_BINARY)
 
     # Denoise background
-    background_denoised = cv.morphologyEx(background_mask, cv.MORPH_OPEN, kernel)
-    background_denoised = cv.morphologyEx(background_denoised, cv.MORPH_CLOSE, kernel)
+    background_denoised = cv.morphologyEx(background_mask, cv.MORPH_OPEN, kernel, iterations=3)
+    background_denoised = cv.morphologyEx(background_denoised, cv.MORPH_CLOSE, kernel, iterations=3)
 
     #Crear el Unknown
 
@@ -111,3 +121,5 @@ cv.destroyAllWindows()
 #hay algo que hace que la linea 73 no ande
 
 # no se que hace la linea 47 de coins.py
+
+#usar 68 y 19 en los trackbats
