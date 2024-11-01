@@ -34,7 +34,7 @@ cv.createTrackbar('Area Threshold', 'Controls', 5000, 50000, on_trackbar)  # Ran
 while True:
     img = cv.imread("./TP3/levadura.png")
     # Reduce image size
-    #img = cv.resize(img, None, fx=0.5, fy=0.5, interpolation=cv.    INTER_AREA)
+    img = cv.resize(img, None, fx=0.5, fy=0.5, interpolation=cv.    INTER_AREA)
 
     gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
 
