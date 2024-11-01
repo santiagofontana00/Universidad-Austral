@@ -8,11 +8,71 @@ cap.set(3, 1280)
 cap.set(4, 720)
 
 # Importing all images
-imgBackground = cv2.imread("Universidad-Austral/Vision Artificial/TP4/Background.png")
+# Preguntar al usuario qué cancha quiere usar
+print("En qué cancha querés jugar?")
+print("1. Boca")
+print("2. River") 
+print("3. Newell's")
+cancha = input("Ingresa el número de tu elección (1-3): ")
+
+if cancha == "1":
+    imgBackground = cv2.imread("Universidad-Austral/Vision Artificial/TP4/canchaBoca.jpeg")
+    imgBackground = cv2.resize(imgBackground, (1280, 720))
+elif cancha == "2":
+    imgBackground = cv2.imread("Universidad-Austral/Vision Artificial/TP4/canchaRiver.jpg")
+    imgBackground = cv2.resize(imgBackground, (1280, 720))
+else:
+    imgBackground = cv2.imread("Universidad-Austral/Vision Artificial/TP4/canchaNewells.jpg")
+    imgBackground = cv2.resize(imgBackground, (1280, 720))
+
 imgGameOver = cv2.imread("Universidad-Austral/Vision Artificial/TP4/gameOver.png")
+
+# Usar pelota por default
 imgBall = cv2.imread("Universidad-Austral/Vision Artificial/TP4/Ball.png", cv2.IMREAD_UNCHANGED)
-imgBat1 = cv2.imread("Universidad-Austral/Vision Artificial/TP4/bat1.png", cv2.IMREAD_UNCHANGED)
-imgBat2 = cv2.imread("Universidad-Austral/Vision Artificial/TP4/bat2.png", cv2.IMREAD_UNCHANGED)
+
+# Preguntar al usuario qué equipo quiere para el jugador izquierdo
+print("\nCon qué equipo quiere jugar el jugador de la izquierda?")
+print("1. Boca")
+print("2. River")
+print("3. Newell's")
+equipo1 = input("Ingresa el número de tu elección (1-3): ")
+
+# Primero leemos bat1.png para obtener las dimensiones de referencia
+bat_reference = cv2.imread("Universidad-Austral/Vision Artificial/TP4/bat1.png", cv2.IMREAD_UNCHANGED)
+bat_height, bat_width = bat_reference.shape[:2]
+
+if equipo1 == "1":
+    imgBat1 = cv2.imread("Universidad-Austral/Vision Artificial/TP4/boca.jpg")
+    imgBat1 = cv2.cvtColor(imgBat1, cv2.COLOR_BGR2BGRA)
+    imgBat1 = cv2.resize(imgBat1, (bat_width, bat_height))
+elif equipo1 == "2":
+    imgBat1 = cv2.imread("Universidad-Austral/Vision Artificial/TP4/river.jpg")
+    imgBat1 = cv2.cvtColor(imgBat1, cv2.COLOR_BGR2BGRA)
+    imgBat1 = cv2.resize(imgBat1, (bat_width, bat_height))
+else:
+    imgBat1 = cv2.imread("Universidad-Austral/Vision Artificial/TP4/newells.jpg")
+    imgBat1 = cv2.cvtColor(imgBat1, cv2.COLOR_BGR2BGRA)
+    imgBat1 = cv2.resize(imgBat1, (bat_width, bat_height))
+
+# Preguntar al usuario qué equipo quiere para el jugador derecho
+print("\nCon qué equipo quiere jugar el jugador de la derecha?")
+print("1. Boca")
+print("2. River")
+print("3. Newell's")
+equipo2 = input("Ingresa el número de tu elección (1-3): ")
+
+if equipo2 == "1":
+    imgBat2 = cv2.imread("Universidad-Austral/Vision Artificial/TP4/boca.jpg")
+    imgBat2 = cv2.cvtColor(imgBat2, cv2.COLOR_BGR2BGRA)
+    imgBat2 = cv2.resize(imgBat2, (bat_width, bat_height))
+elif equipo2 == "2":
+    imgBat2 = cv2.imread("Universidad-Austral/Vision Artificial/TP4/river.jpg")
+    imgBat2 = cv2.cvtColor(imgBat2, cv2.COLOR_BGR2BGRA)
+    imgBat2 = cv2.resize(imgBat2, (bat_width, bat_height))
+else:
+    imgBat2 = cv2.imread("Universidad-Austral/Vision Artificial/TP4/newells.jpg")
+    imgBat2 = cv2.cvtColor(imgBat2, cv2.COLOR_BGR2BGRA)
+    imgBat2 = cv2.resize(imgBat2, (bat_width, bat_height))
 
 # Hand Detector
 detector = HandDetector(detectionCon=0.8, maxHands=2)
@@ -33,8 +93,6 @@ while True:
     hands, img = detector.findHands(img, flipType=False)  # with draw
 
     # Overlaying the background image
-    print("Tamaño de img:", img.shape)
-    print("Tamaño de imgBackground:", imgBackground.shape)
     img = cv2.addWeighted(img, 0.2, imgBackground, 0.8, 0)
 
     # Check for hands
@@ -95,3 +153,10 @@ while True:
         gameOver = False
         score = [0, 0]
         imgGameOver = cv2.imread("Resources/gameOver.png")
+    elif key == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+
+    
