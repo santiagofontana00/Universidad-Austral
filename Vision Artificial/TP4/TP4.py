@@ -27,8 +27,15 @@ else:
 
 imgGameOver = cv2.imread("Universidad-Austral/Vision Artificial/TP4/gameOver.png")
 
+# Primero leemos Ball.png para obtener las dimensiones de referencia
+bat_reference = cv2.imread("Universidad-Austral/Vision Artificial/TP4/Ball.png", cv2.IMREAD_UNCHANGED)
+ball_height, ball_width = bat_reference.shape[:2]
+
+
 # Usar pelota por default
-imgBall = cv2.imread("Universidad-Austral/Vision Artificial/TP4/Ball.png", cv2.IMREAD_UNCHANGED)
+imgBall = cv2.imread("Universidad-Austral/Vision Artificial/TP4/Ball2.png", cv2.IMREAD_UNCHANGED)
+
+imgBall = cv2.resize(imgBall, (ball_width, ball_height))
 
 # Preguntar al usuario qué equipo quiere para el jugador izquierdo
 print("\nCon qué equipo quiere jugar el jugador de la izquierda?")
@@ -40,6 +47,8 @@ equipo1 = input("Ingresa el número de tu elección (1-3): ")
 # Primero leemos bat1.png para obtener las dimensiones de referencia
 bat_reference = cv2.imread("Universidad-Austral/Vision Artificial/TP4/bat1.png", cv2.IMREAD_UNCHANGED)
 bat_height, bat_width = bat_reference.shape[:2]
+
+
 
 if equipo1 == "1":
     imgBat1 = cv2.imread("Universidad-Austral/Vision Artificial/TP4/boca.jpg")
@@ -100,19 +109,19 @@ while True:
         for hand in hands:
             x, y, w, h = hand['bbox']
             h1, w1, _ = imgBat1.shape
-            y1 = y - h1 // 2
+            y1 = y
             y1 = np.clip(y1, 20, 415)
 
             if hand['type'] == "Left":
                 img = cvzone.overlayPNG(img, imgBat1, (59, y1))
-                if 59 < ballPos[0] < 59 + w1 and y1 < ballPos[1] < y1 + h1:
+                if 59 < ballPos[0] < 59 + w1 and y1  < ballPos[1] < y1 + h1:
                     speedX = -speedX
                     ballPos[0] += 30
                     score[0] += 1
 
             if hand['type'] == "Right":
                 img = cvzone.overlayPNG(img, imgBat2, (1195, y1))
-                if 1195 - 50 < ballPos[0] < 1195 and y1 < ballPos[1] < y1 + h1:
+                if 1195 - 50 < ballPos[0] < 1195 and y1  < ballPos[1] < y1 + h1 :
                     speedX = -speedX
                     ballPos[0] -= 30
                     score[1] += 1
@@ -152,11 +161,9 @@ while True:
         speedY = 15
         gameOver = False
         score = [0, 0]
-        imgGameOver = cv2.imread("Resources/gameOver.png")
+        imgGameOver = cv2.imread("Universidad-Austral/Vision Artificial/TP4/gameOver.png")
     elif key == ord('q'):
         break
 
 cap.release()
 cv2.destroyAllWindows()
-
-    
