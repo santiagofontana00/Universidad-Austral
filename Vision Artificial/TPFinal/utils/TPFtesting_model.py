@@ -43,7 +43,7 @@ def load_and_test_camera(model):
 
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         threshold_value = cv2.getTrackbarPos('Threshold', WINDOW_NAME)
-        _, binary = cv2.threshold(image, threshold_value, 255, cv2.THRESH_BINARY_INV)
+        _, binary = cv2.threshold(image, threshold_value, 255, cv2.THRESH_BINARY)
         contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         min_area = cv2.getTrackbarPos('Min Area', WINDOW_NAME)

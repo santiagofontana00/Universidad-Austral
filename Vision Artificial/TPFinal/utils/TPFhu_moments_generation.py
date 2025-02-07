@@ -50,7 +50,7 @@ def generate_hu_moments_file():
 def hu_moments_of_file(filename):
     image = cv2.imread(filename)
     gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-    bin = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 67, 2)
+    _, bin = cv2.threshold(gray, 1, 255, cv2.THRESH_BINARY)
 
     # Invert the image so the area of the UAV is filled with 1's. This is necessary since
     # cv::findContours describes the boundary of areas consisting of 1's.
